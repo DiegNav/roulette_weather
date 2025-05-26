@@ -1,3 +1,3 @@
 class Jugada < ApplicationRecord
-  belongs_to :jugador
+  has_many :jugada_jugadors, dependent: :destroy
 end

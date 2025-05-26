@@ -30,24 +30,22 @@
 <%= button_to 'Reiniciar Juego', reiniciar_jugadors_path, method: :get, class: 'btn btn-danger' %>
 
 <h2>Historial de Jugadas</h2>
-<% Jugador.all.each do |jugador| %>
-  <h3><%= jugador.nombre %></h3>
+<% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
+  <h3>Ronda <%= Jugada.count - i %> - <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %></h3>
   <table>
     <thead>
       <tr>
-        <th>#</th>
+        <th>Jugador</th>
         <th>Clima</th>
         <th>Puntos Obtenidos</th>
-        <th>Fecha</th>
       </tr>
     </thead>
     <tbody>
-      <% jugador.jugadas.order(created_at: :desc).each_with_index do |jugada, i| %>
+      <% jugada.jugada_jugadors.each do |jj| %>
         <tr>
-          <td><%= i + 1 %></td>
-          <td><%= jugada.clima %></td>
-          <td><%= jugada.puntos_obtenidos %></td>
-          <td><%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %></td>
+          <td><%= jj.jugador.nombre %></td>
+          <td><%= jj.clima %></td>
+          <td><%= jj.puntos_obtenidos %></td>
         </tr>
       <% end %>
     </tbody>

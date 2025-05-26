@@ -33,19 +33,20 @@ class JugadorsController < ApplicationController
       "Nublado" => 2,
       "Tormenta" => 0
     }
+    jugada = Jugada.create # No pasar created_at manualmente, deja que Rails lo maneje
     Jugador.all.each do |jugador|
       clima_aleatorio = climas.keys.sample
       puntos = climas[clima_aleatorio]
       jugador.update(clima: clima_aleatorio, puntos: jugador.puntos + puntos)
-      # Registrar la jugada en el historial
-      jugador.jugadas.create(clima: clima_aleatorio, puntos_obtenidos: puntos)
+      jugada.jugada_jugadors.create(jugador: jugador, clima: clima_aleatorio, puntos_obtenidos: puntos)
     end
     redirect_to action: :index
   end
 
   def reiniciar
-    @jugador = Jugador.first
-    @jugador.update(puntos: 0, clima: "Desconocido")
+    JugadaJugador.delete_all
+    Jugada.delete_all
+    Jugador.update_all(puntos: 0, clima: "Desconocido")
     redirect_to action: :index
   end
 

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  jugada: one
+  jugador: one
+  clima: MyString
+  puntos_obtenidos: 1
+
+two:
+  jugada: two
+  jugador: two
+  clima: MyString
+  puntos_obtenidos: 1

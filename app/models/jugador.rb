@@ -1,5 +1,5 @@
 class Jugador < ApplicationRecord
-  has_many :jugadas, dependent: :destroy
+  has_many :jugada_jugadors, dependent: :destroy
 
   before_validation :set_default_puntos, on: :create
 
