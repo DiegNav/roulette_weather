@@ -14,6 +14,8 @@ class JugadorsController < ApplicationController
     clima_aleatorio = climas.keys.sample
     puntos = climas[clima_aleatorio]
     @jugador.update(clima: clima_aleatorio, puntos: @jugador.puntos + puntos)
+    # Registrar la jugada en el historial
+    @jugador.jugadas.create(clima: clima_aleatorio, puntos_obtenidos: puntos)
     redirect_to action: :index
   end
 

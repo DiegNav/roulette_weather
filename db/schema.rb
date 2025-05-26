@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_24_224413) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_162618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "jugadas", force: :cascade do |t|
+    t.bigint "jugador_id", null: false
+    t.string "clima"
+    t.integer "puntos_obtenidos"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jugador_id"], name: "index_jugadas_on_jugador_id"
+  end
 
   create_table "jugadors", force: :cascade do |t|
     t.string "nombre"
@@ -21,4 +30,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_24_224413) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "jugadas", "jugadors"
 end

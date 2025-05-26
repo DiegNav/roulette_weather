@@ -6,3 +6,25 @@
 
 <%= button_to 'Girar Ruleta', girar_jugadors_path, method: :get, class: 'btn btn-primary' %>
 <%= button_to 'Reiniciar Juego', reiniciar_jugadors_path, method: :get, class: 'btn btn-danger' %>
+
+<h2>Historial de Jugadas</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Clima</th>
+      <th>Puntos Obtenidos</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @jugador.jugadas.order(created_at: :desc).each_with_index do |jugada, i| %>
+      <tr>
+        <td><%= i + 1 %></td>
+        <td><%= jugada.clima %></td>
+        <td><%= jugada.puntos_obtenidos %></td>
+        <td><%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
