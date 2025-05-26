@@ -7,7 +7,7 @@
   <thead>
     <tr>
       <th>Nombre</th>
-      <th>Puntos</th>
+      <th>Dinero</th>
       <th>Clima actual</th>
       <th>Acciones</th>
     </tr>
@@ -16,7 +16,7 @@
     <% Jugador.all.each do |jugador| %>
       <tr>
         <td><%= jugador.nombre %></td>
-        <td><%= jugador.puntos %></td>
+        <td><%= jugador.dinero %></td>
         <td><%= jugador.clima %></td>
         <td>
           <%= button_to 'Eliminar', jugador_path(jugador), method: :delete, data: { turbo_confirm: '¿Estás seguro?' }, class: 'btn btn-danger' %>
@@ -37,7 +37,7 @@
       <tr>
         <th>Jugador</th>
         <th>Clima</th>
-        <th>Puntos Obtenidos</th>
+        <th>Dinero Obtenido</th>
       </tr>
     </thead>
     <tbody>
