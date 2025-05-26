@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
-  resources :jugadors, only: [ :index, :new, :create, :update, :destroy ]
-  get "ruleta/girar", to: "ruleta#girar", as: :girar_ruleta
-  get "ruleta/reiniciar", to: "ruleta#reiniciar", as: :reiniciar_ruleta
-  root "jugadors#index"
+  resources :jugadors, only: [ :new, :create, :update, :destroy ]
+  resources :ruleta, only: [ :index ] do
+    collection do
+      get :girar
+      get :reiniciar
+    end
+  end
+  root "ruleta#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

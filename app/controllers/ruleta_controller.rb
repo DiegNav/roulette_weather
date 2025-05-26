@@ -1,4 +1,8 @@
 class RuletaController < ApplicationController
+  def index
+    @jugador = Jugador.first_or_create(nombre: "Jugador 1", puntos: 0, clima: "Desconocido")
+  end
+
   def girar
     climas = {
       "Soleado" => 10,
@@ -13,13 +17,13 @@ class RuletaController < ApplicationController
       jugador.update(clima: clima_aleatorio, puntos: jugador.puntos + puntos)
       jugada.historial_jugadas.create(jugador: jugador, clima: clima_aleatorio, puntos_obtenidos: puntos)
     end
-    redirect_to jugadors_path
+    redirect_to ruleta_path
   end
 
   def reiniciar
     HistorialJugada.delete_all
     Jugada.delete_all
     Jugador.update_all(puntos: 0, clima: "Desconocido")
-    redirect_to jugadors_path
+    redirect_to ruleta_path
   end
 end
