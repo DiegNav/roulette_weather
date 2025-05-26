@@ -8,7 +8,6 @@
     <tr>
       <th>Nombre</th>
       <th>Dinero</th>
-      <th>Clima actual</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -17,7 +16,6 @@
       <tr>
         <td><%= jugador.nombre %></td>
         <td><%= jugador.dinero %></td>
-        <td><%= jugador.clima %></td>
         <td>
           <%= button_to 'Eliminar', jugador_path(jugador), method: :delete, data: { turbo_confirm: '¿Estás seguro?' }, class: 'btn btn-danger' %>
         </td>
@@ -31,13 +29,12 @@
 
 <h2>Historial de Jugadas</h2>
 <% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
-  <h3>Ronda <%= Jugada.count - i %> - <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %></h3>
+  <h3>Ronda <%= Jugada.count - i %> - <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %> - Color ganador: <%= jugada.color_ganador %></h3>
   <table>
     <thead>
       <tr>
         <th>Jugador</th>
         <th>Color Apostado</th>
-        <th>Color Ganador</th>
         <th>Apuesta</th>
         <th>Dinero Obtenido</th>
       </tr>
@@ -47,7 +44,6 @@
         <tr>
           <td><%= jj.jugador.nombre %></td>
           <td><%= jj.color_apostado %></td>
-          <td><%= jj.clima %></td>
           <td><%= jj.apuesta %></td>
           <td><%= jj.dinero_obtenido %></td>
         </tr>

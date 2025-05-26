@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_26_200349) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_201442) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "historial_jugadas", force: :cascade do |t|
     t.bigint "jugada_id", null: false
     t.bigint "jugador_id", null: false
-    t.string "clima"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "dinero_obtenido"
@@ -30,12 +29,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_200349) do
   create_table "jugadas", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color_ganador"
   end
 
   create_table "jugadors", force: :cascade do |t|
     t.string "nombre"
     t.integer "dinero"
-    t.string "clima"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

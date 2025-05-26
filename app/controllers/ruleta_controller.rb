@@ -1,6 +1,6 @@
 class RuletaController < ApplicationController
   def index
-    @jugador = Jugador.first_or_create(nombre: "Jugador 1", dinero: 0, clima: "Desconocido")
+    @jugador = Jugador.first_or_create(nombre: "Jugador 1", dinero: 0)
   end
 
   def girar
@@ -12,10 +12,9 @@ class RuletaController < ApplicationController
     # Generar ruleta con probabilidades
     ruleta = colores.flat_map { |c| [ c[:color] ] * c[:prob] }
     color_ganador = ruleta.sample
-
-    jugada = Jugada.create
+    jugada = Jugada.create(color_ganador: color_ganador)
     Jugador.all.each do |jugador|
-      if jugador.dinero <= 1000
+      if jugador.dinero < 1000
         apuesta = jugador.dinero
       else
         # Apuesta entre 8% y 15% de su dinero
@@ -33,10 +32,9 @@ class RuletaController < ApplicationController
       else
         ganancia = 0
       end
-      jugador.update(dinero: jugador.dinero - apuesta + ganancia, clima: color_ganador)
+      jugador.update(dinero: jugador.dinero - apuesta + ganancia)
       jugada.historial_jugadas.create(
         jugador: jugador,
-        clima: color_ganador,
         dinero_obtenido: ganancia - apuesta,
         color_apostado: siguiente_color,
         apuesta: apuesta
@@ -48,7 +46,7 @@ class RuletaController < ApplicationController
   def reiniciar
     HistorialJugada.delete_all
     Jugada.delete_all
-    Jugador.update_all(dinero: 10000, clima: "Desconocido")
+    Jugador.update_all(dinero: 10000)
     redirect_to ruleta_path
   end
 end
