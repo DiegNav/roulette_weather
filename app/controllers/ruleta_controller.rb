@@ -20,11 +20,12 @@ class RuletaController < ApplicationController
   def index; end
 
   def girar
+    max_temp = ClimaService.maxima_santiago
     color_ganador = generar_color_ganador
-    jugada = Jugada.create(color_ganador: color_ganador)
+    jugada = Jugada.create(color_ganador: color_ganador, max_temp: max_temp)
 
     Jugador.find_each do |jugador|
-      procesar_jugada(jugador, jugada, color_ganador)
+      procesar_jugada(jugador, jugada, color_ganador, max_temp)
     end
 
     redirect_to ruleta_path
@@ -56,13 +57,19 @@ class RuletaController < ApplicationController
     @ruleta ||= colores.flat_map { |c| [ c[:color] ] * c[:prob] }
   end
 
-  def calcular_apuesta(jugador)
-    if jugador.dinero < 1000
-      jugador.dinero
+  def calcular_apuesta(jugador, max_temp = nil)
+    max_temp ||= ClimaService.maxima_santiago
+    if max_temp && max_temp > 23
+      porcentaje = rand(3..7)
     else
       porcentaje = rand(8..15)
+    end
+    apuesta = if jugador.dinero < 1000
+      jugador.dinero
+    else
       (jugador.dinero * porcentaje / 100.0).floor
     end
+    apuesta
   end
 
   def calcular_ganancia(apuesta, color_apostado, color_ganador)
@@ -71,8 +78,8 @@ class RuletaController < ApplicationController
     color_ganador == "verde" ? apuesta * 15 : apuesta * 2
   end
 
-  def procesar_jugada(jugador, jugada, color_ganador)
-    apuesta = calcular_apuesta(jugador)
+  def procesar_jugada(jugador, jugada, color_ganador, max_temp = nil)
+    apuesta = calcular_apuesta(jugador, max_temp)
     color_apostado = ruleta.sample
     ganancia = calcular_ganancia(apuesta, color_apostado, color_ganador)
     jugador.update(dinero: jugador.dinero - apuesta + ganancia)

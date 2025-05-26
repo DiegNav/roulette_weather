@@ -1,5 +1,9 @@
 <h1>Ruleta del Clima</h1>
 
+<% if Jugada.last&.max_temp %>
+  <p><strong>Temperatura máxima pronosticada en Santiago (próximos días):</strong> <%= Jugada.last.max_temp %> °C</p>
+<% end %>
+
 <%= link_to 'Crear nuevo jugador', new_jugador_path, class: 'btn btn-info' %>
 <br><br>
 
@@ -29,7 +33,7 @@
 
 <h2>Historial de Jugadas</h2>
 <% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
-  <h3>Ronda <%= Jugada.count - i %> - <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %> - Color ganador: <%= jugada.color_ganador %></h3>
+  <h3>Ronda <%= Jugada.count - i %> - <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %> - Color ganador: <%= jugada.color_ganador %> <% if jugada.max_temp %> | Temp máx: <%= jugada.max_temp %> °C <% end %></h3>
   <table>
     <thead>
       <tr>
