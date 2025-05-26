@@ -1,2 +1,8 @@
-<h1>Jugadors#index</h1>
-<p>Find me in app/views/jugadors/index.html.erb</p>
+<h1>Ruleta del Clima</h1>
+
+<p><strong>Nombre:</strong> <%= @jugador.nombre %></p>
+<p><strong>Puntos:</strong> <%= @jugador.puntos %></p>
+<p><strong>Clima actual:</strong> <%= @jugador.clima %></p>
+
+<%= button_to 'Girar Ruleta', girar_jugadors_path, method: :get, class: 'btn btn-primary' %>
+<%= button_to 'Reiniciar Juego', reiniciar_jugadors_path, method: :get, class: 'btn btn-danger' %>
