@@ -1,57 +1,92 @@
-<h1>Ruleta del Clima</h1>
+<div class="max-w-4xl mx-auto px-4 py-8 space-y-10">
 
-<% if Jugada.last&.max_temp %>
-  <p><strong>Temperatura máxima pronosticada en Santiago (próximos días):</strong> <%= Jugada.last.max_temp %> °C</p>
-<% end %>
+  <!-- Título -->
+  <h1 class="text-4xl font-bold text-center text-indigo-700">🎲 Ruleta del Clima</h1>
 
-<%= link_to 'Crear nuevo jugador', new_jugador_path, class: 'btn btn-info' %>
-<br><br>
+  <!-- Botones de control principales -->
+  <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+    <%= button_to '🎰 Girar Ruleta', girar_ruleta_path, method: :get,
+        class: 'bg-green-600 hover:bg-green-700 text-white text-xl px-6 py-3 rounded shadow text-center w-full sm:w-auto' %>
 
-<table border="1" cellpadding="5">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Dinero</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% Jugador.all.each do |jugador| %>
-      <tr>
-        <td><%= jugador.nombre %></td>
-        <td><%= jugador.dinero %></td>
-        <td>
-          <%= button_to 'Eliminar', jugador_path(jugador), method: :delete, data: { turbo_confirm: '¿Estás seguro?' }, class: 'btn btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <%= button_to '🔁 Reiniciar Juego', reiniciar_ruleta_path, method: :get,
+        data: { turbo_confirm: '¿Estás seguro de reiniciar el juego? Esto borrará todo.' },
+        class: 'bg-red-600 hover:bg-red-700 text-white text-xl px-6 py-3 rounded shadow text-center w-full sm:w-auto' %>
+  </div>
 
-<%= button_to 'Girar Ruleta', girar_ruleta_path, method: :get, class: 'btn btn-primary' %>
-<%= button_to 'Reiniciar Juego', reiniciar_ruleta_path, method: :get, class: 'btn btn-danger' %>
+  <!-- Temperatura -->
+  <% if Jugada.last&.max_temp %>
+    <p class="text-center text-lg text-gray-700 mt-4">
+      🌡️ <strong>Temperatura máxima pronosticada en Santiago:</strong> <%= Jugada.last.max_temp %> °C
+    </p>
+  <% end %>
 
-<h2>Historial de Jugadas</h2>
-<% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
-  <h3>Ronda <%= Jugada.count - i %> - <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %> - Color ganador: <%= jugada.color_ganador %> <% if jugada.max_temp %> | Temp máx: <%= jugada.max_temp %> °C <% end %></h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Jugador</th>
-        <th>Color Apostado</th>
-        <th>Apuesta</th>
-        <th>Dinero Obtenido</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% jugada.historial_jugadas.each do |jj| %>
+  <!-- Tabla de jugadores -->
+  <div class="bg-white shadow rounded-lg overflow-hidden">
+    <table class="min-w-full text-sm text-center">
+      <thead class="bg-gray-100 text-gray-800">
         <tr>
-          <td><%= jj.jugador.nombre %></td>
-          <td><%= jj.color_apostado %></td>
-          <td><%= jj.apuesta %></td>
-          <td><%= jj.dinero_obtenido %></td>
+          <th class="py-3 px-4">Nombre</th>
+          <th class="py-3 px-4">Dinero</th>
+          <th class="py-3 px-4">Acciones</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <% Jugador.all.each do |jugador| %>
+          <tr>
+            <td class="py-3 px-4"><%= jugador.nombre %></td>
+            <td class="py-3 px-4">$<%= number_with_delimiter(jugador.dinero) %></td>
+            <td class="py-3 px-4">
+              <%= button_to '🗑️ Eliminar', jugador_path(jugador), method: :delete,
+                  data: { turbo_confirm: '¿Estás seguro?' },
+                  class: 'bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Botón para añadir nuevo jugador -->
+  <div class="text-center mt-4">
+    <%= link_to '➕ Añadir nuevo jugador', new_jugador_path,
+        class: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow' %>
+  </div>
+
+  <!-- Historial de jugadas -->
+  <h2 class="text-2xl font-bold text-center text-gray-800 mt-10">📜 Historial de Jugadas</h2>
+
+  <div class="space-y-6 mt-4">
+    <% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
+      <div class="bg-white shadow rounded-lg p-4">
+        <h3 class="text-lg font-semibold mb-2 text-center">
+          Ronda <%= Jugada.count - i %> – <%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %> –
+          <span class="<%= jugada.color_ganador == 'rojo' ? 'text-red-600' : jugada.color_ganador == 'negro' ? 'text-gray-800' : 'text-green-600' %> font-bold">
+            🎯 Color ganador: <%= jugada.color_ganador.capitalize %>
+          </span>
+          <% if jugada.max_temp %> | 🌡️ <%= jugada.max_temp %> °C <% end %>
+        </h3>
+
+        <table class="w-full table-auto border mt-2 text-sm text-center">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="p-2">Jugador</th>
+              <th class="p-2">Color Apostado</th>
+              <th class="p-2">Apuesta</th>
+              <th class="p-2">Dinero Obtenido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% jugada.historial_jugadas.each do |jj| %>
+              <tr class="border-t">
+                <td class="p-2"><%= jj.jugador.nombre %></td>
+                <td class="p-2"><%= jj.color_apostado %></td>
+                <td class="p-2">$<%= number_with_delimiter(jj.apuesta) %></td>
+                <td class="p-2">$<%= number_with_delimiter(jj.dinero_obtenido) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>
