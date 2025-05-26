@@ -2,11 +2,9 @@
 #
 # Actions:
 # - index: Initializes or retrieves the first Jugador, setting default values if necessary.
-# - girar: Simulates spinning the weather roulette, updates the Jugador's weather and points,
-#          and records the play in the history.
-# - reiniciar: Resets the Jugador's points and weather to their initial state.
 # - new: Renders a form for creating a new Jugador.
 # - create: Handles the submission of the new Jugador form, saving the Jugador to the database.
+# - update: Updates the points of an existing Jugador.
 # - destroy: Deletes a Jugador from the database.
 #
 # Assumptions:
@@ -15,39 +13,14 @@
 #
 # Example usage:
 #   GET /jugadors           # Calls index
-#   POST /jugadors/girar    # Calls girar
-#   POST /jugadors/reiniciar # Calls reiniciar
 #   GET /jugadors/new       # Calls new
 #   POST /jugadors          # Calls create
+#   PATCH/PUT /jugadors/:id # Calls update
 #   DELETE /jugadors/:id    # Calls destroy
 #
 class JugadorsController < ApplicationController
   def index
     @jugador = Jugador.first_or_create(nombre: "Jugador 1", puntos: 0, clima: "Desconocido")
-  end
-
-  def girar
-    climas = {
-      "Soleado" => 10,
-      "Lluvioso" => 5,
-      "Nublado" => 2,
-      "Tormenta" => 0
-    }
-    jugada = Jugada.create # No pasar created_at manualmente, deja que Rails lo maneje
-    Jugador.all.each do |jugador|
-      clima_aleatorio = climas.keys.sample
-      puntos = climas[clima_aleatorio]
-      jugador.update(clima: clima_aleatorio, puntos: jugador.puntos + puntos)
-      jugada.jugada_jugadors.create(jugador: jugador, clima: clima_aleatorio, puntos_obtenidos: puntos)
-    end
-    redirect_to action: :index
-  end
-
-  def reiniciar
-    JugadaJugador.delete_all
-    Jugada.delete_all
-    Jugador.update_all(puntos: 0, clima: "Desconocido")
-    redirect_to action: :index
   end
 
   def new
@@ -60,6 +33,15 @@ class JugadorsController < ApplicationController
       redirect_to jugadors_path, notice: "Jugador creado exitosamente."
     else
       render :new
+    end
+  end
+
+  def update
+    @jugador = Jugador.find(params[:id])
+    if @jugador.update(jugador_params)
+      redirect_to jugadors_path, notice: "Puntos actualizados."
+    else
+      render :edit
     end
   end
 

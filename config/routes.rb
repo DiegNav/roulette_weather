@@ -1,10 +1,7 @@
 Rails.application.routes.draw do
-  resources :jugadors, only: [ :index, :new, :create, :destroy ] do
-    collection do
-      get :girar
-      get :reiniciar
-    end
-  end
+  resources :jugadors, only: [ :index, :new, :create, :update, :destroy ]
+  get "ruleta/girar", to: "ruleta#girar", as: :girar_ruleta
+  get "ruleta/reiniciar", to: "ruleta#reiniciar", as: :reiniciar_ruleta
   root "jugadors#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

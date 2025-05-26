@@ -26,8 +26,8 @@
   </tbody>
 </table>
 
-<%= button_to 'Girar Ruleta', girar_jugadors_path, method: :get, class: 'btn btn-primary' %>
-<%= button_to 'Reiniciar Juego', reiniciar_jugadors_path, method: :get, class: 'btn btn-danger' %>
+<%= button_to 'Girar Ruleta', girar_ruleta_path, method: :get, class: 'btn btn-primary' %>
+<%= button_to 'Reiniciar Juego', reiniciar_ruleta_path, method: :get, class: 'btn btn-danger' %>
 
 <h2>Historial de Jugadas</h2>
 <% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
@@ -41,7 +41,7 @@
       </tr>
     </thead>
     <tbody>
-      <% jugada.jugada_jugadors.each do |jj| %>
+      <% jugada.historial_jugadas.each do |jj| %>
         <tr>
           <td><%= jj.jugador.nombre %></td>
           <td><%= jj.clima %></td>
