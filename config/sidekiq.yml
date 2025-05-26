@@ -1,0 +1,4 @@
+:schedule:
+  generar_ronda_job:
+    every: ["3m"]
+    class: "GenerarRondaJob"
