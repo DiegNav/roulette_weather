@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_26_181508) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_185028) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "jugada_jugadors", force: :cascade do |t|
+  create_table "historial_jugadas", force: :cascade do |t|
     t.bigint "jugada_id", null: false
     t.bigint "jugador_id", null: false
     t.string "clima"
     t.integer "puntos_obtenidos"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["jugada_id"], name: "index_jugada_jugadors_on_jugada_id"
-    t.index ["jugador_id"], name: "index_jugada_jugadors_on_jugador_id"
+    t.index ["jugada_id"], name: "index_historial_jugadas_on_jugada_id"
+    t.index ["jugador_id"], name: "index_historial_jugadas_on_jugador_id"
   end
 
   create_table "jugadas", force: :cascade do |t|
@@ -38,6 +38,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_181508) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "jugada_jugadors", "jugadas"
-  add_foreign_key "jugada_jugadors", "jugadors"
+  add_foreign_key "historial_jugadas", "jugadas"
+  add_foreign_key "historial_jugadas", "jugadors"
 end
