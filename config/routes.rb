@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :jugadors, only: [:index] do
+  resources :jugadors, only: [:index, :new, :create] do
     collection do
       get :girar
       get :reiniciar
