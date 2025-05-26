@@ -1,30 +1,55 @@
 <h1>Ruleta del Clima</h1>
 
-<p><strong>Nombre:</strong> <%= @jugador.nombre %></p>
-<p><strong>Puntos:</strong> <%= @jugador.puntos %></p>
-<p><strong>Clima actual:</strong> <%= @jugador.clima %></p>
+<%= link_to 'Crear nuevo jugador', new_jugador_path, class: 'btn btn-info' %>
+<br><br>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Puntos</th>
+      <th>Clima actual</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Jugador.all.each do |jugador| %>
+      <tr>
+        <td><%= jugador.nombre %></td>
+        <td><%= jugador.puntos %></td>
+        <td><%= jugador.clima %></td>
+        <td>
+          <%= button_to 'Eliminar', jugador_path(jugador), method: :delete, data: { turbo_confirm: '¿Estás seguro?' }, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <%= button_to 'Girar Ruleta', girar_jugadors_path, method: :get, class: 'btn btn-primary' %>
 <%= button_to 'Reiniciar Juego', reiniciar_jugadors_path, method: :get, class: 'btn btn-danger' %>
 
 <h2>Historial de Jugadas</h2>
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Clima</th>
-      <th>Puntos Obtenidos</th>
-      <th>Fecha</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @jugador.jugadas.order(created_at: :desc).each_with_index do |jugada, i| %>
+<% Jugador.all.each do |jugador| %>
+  <h3><%= jugador.nombre %></h3>
+  <table>
+    <thead>
       <tr>
-        <td><%= i + 1 %></td>
-        <td><%= jugada.clima %></td>
-        <td><%= jugada.puntos_obtenidos %></td>
-        <td><%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %></td>
+        <th>#</th>
+        <th>Clima</th>
+        <th>Puntos Obtenidos</th>
+        <th>Fecha</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% jugador.jugadas.order(created_at: :desc).each_with_index do |jugada, i| %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= jugada.clima %></td>
+          <td><%= jugada.puntos_obtenidos %></td>
+          <td><%= jugada.created_at.strftime('%d/%m/%Y %H:%M') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

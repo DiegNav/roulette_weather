@@ -7,6 +7,7 @@
 # - reiniciar: Resets the Jugador's points and weather to their initial state.
 # - new: Renders a form for creating a new Jugador.
 # - create: Handles the submission of the new Jugador form, saving the Jugador to the database.
+# - destroy: Deletes a Jugador from the database.
 #
 # Assumptions:
 # - There is always at least one Jugador in the database.
@@ -18,6 +19,7 @@
 #   POST /jugadors/reiniciar # Calls reiniciar
 #   GET /jugadors/new       # Calls new
 #   POST /jugadors          # Calls create
+#   DELETE /jugadors/:id    # Calls destroy
 #
 class JugadorsController < ApplicationController
   def index
@@ -54,15 +56,21 @@ class JugadorsController < ApplicationController
   def create
     @jugador = Jugador.new(jugador_params)
     if @jugador.save
-      redirect_to jugadors_path, notice: 'Jugador creado exitosamente.'
+      redirect_to jugadors_path, notice: "Jugador creado exitosamente."
     else
       render :new
     end
   end
 
+  def destroy
+    @jugador = Jugador.find(params[:id])
+    @jugador.destroy
+    redirect_to jugadors_path, notice: "Jugador eliminado exitosamente."
+  end
+
   private
 
   def jugador_params
-    params.require(:jugador).permit(:nombre)
+    params.require(:jugador).permit(:nombre, :puntos)
   end
 end
