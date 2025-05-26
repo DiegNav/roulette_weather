@@ -19,10 +19,6 @@
 #   DELETE /jugadors/:id    # Calls destroy
 #
 class JugadorsController < ApplicationController
-  def index
-    @jugador = Jugador.first_or_create(nombre: "Jugador 1", dinero: 10000, clima: "Desconocido")
-  end
-
   def new
     @jugador = Jugador.new
   end
@@ -31,7 +27,7 @@ class JugadorsController < ApplicationController
     @jugador = Jugador.new(jugador_params)
     @jugador.dinero = 10000 if @jugador.dinero.nil?
     if @jugador.save
-      redirect_to ruleta_index_path, notice: "Jugador creado exitosamente."
+      redirect_to ruleta_path, notice: "Jugador creado exitosamente."
     else
       render :new
     end
@@ -40,7 +36,7 @@ class JugadorsController < ApplicationController
   def update
     @jugador = Jugador.find(params[:id])
     if @jugador.update(jugador_params)
-      redirect_to ruleta_index_path, notice: "Dinero actualizado."
+      redirect_to ruleta_path, notice: "Dinero actualizado."
     else
       render :edit
     end
@@ -49,7 +45,7 @@ class JugadorsController < ApplicationController
   def destroy
     @jugador = Jugador.find(params[:id])
     @jugador.destroy
-    redirect_to ruleta_index_path, notice: "Jugador eliminado exitosamente."
+    redirect_to ruleta_path, notice: "Jugador eliminado exitosamente."
   end
 
   private
