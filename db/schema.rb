@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_26_195922) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_200349) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,9 +18,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_195922) do
     t.bigint "jugada_id", null: false
     t.bigint "jugador_id", null: false
     t.string "clima"
-    t.integer "puntos_obtenidos"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "dinero_obtenido"
+    t.string "color_apostado"
+    t.integer "apuesta"
     t.index ["jugada_id"], name: "index_historial_jugadas_on_jugada_id"
     t.index ["jugador_id"], name: "index_historial_jugadas_on_jugador_id"
   end

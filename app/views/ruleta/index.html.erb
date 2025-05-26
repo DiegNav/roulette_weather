@@ -36,7 +36,9 @@
     <thead>
       <tr>
         <th>Jugador</th>
-        <th>Clima</th>
+        <th>Color Apostado</th>
+        <th>Color Ganador</th>
+        <th>Apuesta</th>
         <th>Dinero Obtenido</th>
       </tr>
     </thead>
@@ -44,8 +46,10 @@
       <% jugada.historial_jugadas.each do |jj| %>
         <tr>
           <td><%= jj.jugador.nombre %></td>
+          <td><%= jj.color_apostado %></td>
           <td><%= jj.clima %></td>
-          <td><%= jj.puntos_obtenidos %></td>
+          <td><%= jj.apuesta %></td>
+          <td><%= jj.dinero_obtenido %></td>
         </tr>
       <% end %>
     </tbody>
