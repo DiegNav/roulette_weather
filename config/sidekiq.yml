@@ -2,3 +2,6 @@
   generar_ronda_job:
     every: ["3m"]
     class: "GenerarRondaJob"
+  bonus_diario_job:
+    cron: "59 23 * * *"
+    class: "BonusDiarioJob"

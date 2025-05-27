@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :jugadors, only: [ :new, :create, :update, :destroy ]
+  resources :jugadors, only: [ :new, :create, :edit, :update, :destroy ]
   resources :ruleta, only: [ :index ] do
     collection do
       get :girar

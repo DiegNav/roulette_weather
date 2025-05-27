@@ -37,11 +37,11 @@
           <tr class="hover:bg-gray-50">
             <td class="py-3 px-4 font-medium"><%= jugador.nombre %></td>
             <td class="py-3 px-4">$<%= number_with_delimiter(jugador.dinero) %></td>
-            <td class="py-3 px-4">
+            <td class="py-3 px-4 flex flex-col gap-2 sm:flex-row sm:gap-2 justify-center">
+              <%= link_to '✏️ Editar', edit_jugador_path(jugador), class: 'bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow text-sm' %>
               <%= button_to '🗑️ Eliminar', jugador_path(jugador), method: :delete,
                   data: { turbo_confirm: '¿Estás seguro?' },
-                  class: 'bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded',
-                  title: "Eliminar jugador #{jugador.nombre}", aria: { label: "Eliminar jugador" } %>
+                  class: 'bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow text-sm mt-1 sm:mt-0' %>
             </td>
           </tr>
         <% end %>

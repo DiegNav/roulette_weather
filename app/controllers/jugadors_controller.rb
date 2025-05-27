@@ -33,6 +33,10 @@ class JugadorsController < ApplicationController
     end
   end
 
+  def edit
+    @jugador = Jugador.find(params[:id])
+  end
+
   def update
     @jugador = Jugador.find(params[:id])
     if @jugador.update(jugador_params)
