@@ -1,16 +1,18 @@
 <div class="max-w-4xl mx-auto px-4 py-8 space-y-10">
 
   <!-- Título -->
-  <h1 class="text-4xl font-bold text-center text-indigo-700">🎲 Ruleta del Clima</h1>
+  <h1 class="text-4xl font-bold text-center text-indigo-700 border-b pb-4">🎲 Ruleta del Clima</h1>
 
   <!-- Botones de control principales -->
   <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
     <%= button_to '🎰 Girar Ruleta', girar_ruleta_path, method: :get,
-        class: 'bg-green-600 hover:bg-green-700 text-white text-xl px-6 py-3 rounded shadow text-center w-full sm:w-auto' %>
+        class: 'bg-green-600 hover:bg-green-700 text-white text-xl px-6 py-3 rounded-lg shadow text-center w-full sm:w-auto',
+        title: "Girar ruleta para una nueva jugada", aria: { label: "Girar ruleta" } %>
 
     <%= button_to '🔁 Reiniciar Juego', reiniciar_ruleta_path, method: :get,
         data: { turbo_confirm: '¿Estás seguro de reiniciar el juego? Esto borrará todo.' },
-        class: 'bg-red-600 hover:bg-red-700 text-white text-xl px-6 py-3 rounded shadow text-center w-full sm:w-auto' %>
+        class: 'bg-red-600 hover:bg-red-700 text-white text-xl px-6 py-3 rounded-lg shadow text-center w-full sm:w-auto',
+        title: "Reiniciar juego desde cero", aria: { label: "Reiniciar juego" } %>
   </div>
 
   <!-- Temperatura -->
@@ -21,7 +23,7 @@
   <% end %>
 
   <!-- Tabla de jugadores -->
-  <div class="bg-white shadow rounded-lg overflow-hidden">
+  <div class="bg-white shadow rounded-lg overflow-hidden mt-6">
     <table class="min-w-full text-sm text-center">
       <thead class="bg-gray-100 text-gray-800">
         <tr>
@@ -32,13 +34,14 @@
       </thead>
       <tbody class="divide-y divide-gray-200">
         <% Jugador.all.each do |jugador| %>
-          <tr>
-            <td class="py-3 px-4"><%= jugador.nombre %></td>
+          <tr class="hover:bg-gray-50">
+            <td class="py-3 px-4 font-medium"><%= jugador.nombre %></td>
             <td class="py-3 px-4">$<%= number_with_delimiter(jugador.dinero) %></td>
             <td class="py-3 px-4">
               <%= button_to '🗑️ Eliminar', jugador_path(jugador), method: :delete,
                   data: { turbo_confirm: '¿Estás seguro?' },
-                  class: 'bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded' %>
+                  class: 'bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded',
+                  title: "Eliminar jugador #{jugador.nombre}", aria: { label: "Eliminar jugador" } %>
             </td>
           </tr>
         <% end %>
@@ -47,13 +50,14 @@
   </div>
 
   <!-- Botón para añadir nuevo jugador -->
-  <div class="text-center mt-4">
+  <div class="text-center mt-6">
     <%= link_to '➕ Añadir nuevo jugador', new_jugador_path,
-        class: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow' %>
+        class: 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow',
+        title: "Añadir nuevo jugador", aria: { label: "Añadir jugador" } %>
   </div>
 
   <!-- Historial de jugadas -->
-  <h2 class="text-2xl font-bold text-center text-gray-800 mt-10">📜 Historial de Jugadas</h2>
+  <h2 class="text-2xl font-bold text-center text-gray-800 mt-10 border-b pb-2">📜 Historial de Jugadas</h2>
 
   <div class="space-y-6 mt-4">
     <% Jugada.order(created_at: :desc).each_with_index do |jugada, i| %>
@@ -75,16 +79,43 @@
               <th class="p-2">Dinero Obtenido</th>
             </tr>
           </thead>
-          <tbody>
-            <% jugada.historial_jugadas.each do |jj| %>
-              <tr class="border-t">
-                <td class="p-2"><%= jj.jugador.nombre %></td>
-                <td class="p-2"><%= jj.color_apostado %></td>
-                <td class="p-2">$<%= number_with_delimiter(jj.apuesta) %></td>
-                <td class="p-2">$<%= number_with_delimiter(jj.dinero_obtenido) %></td>
-              </tr>
-            <% end %>
-          </tbody>
+            <tbody class="divide-y divide-gray-200">
+                <% jugada.historial_jugadas.each do |jj| %>
+                    <tr class="hover:bg-gray-50">
+                    <td class="p-2"><%= jj.jugador.nombre %></td>
+                    
+                    <!-- Fondo del color apostado -->
+                    <td class="p-2">
+                      <% case jj.color_apostado
+                        when 'rojo' %>
+                          <span class="inline-flex items-center justify-center px-4 py-1 rounded-full text-sm font-semibold bg-red-500 text-white shadow min-w-[70px]">
+                            Rojo
+                          </span>
+                      <% when 'verde' %>
+                          <span class="inline-flex items-center justify-center px-4 py-1 rounded-full text-sm font-semibold bg-green-500 text-white shadow min-w-[70px]">
+                            Verde
+                          </span>
+                      <% when 'negro' %>
+                          <span class="inline-flex items-center justify-center px-4 py-1 rounded-full text-sm font-semibold bg-black text-white shadow min-w-[70px]">
+                            Negro
+                          </span>
+                      <% else %>
+                          <span class="inline-flex items-center justify-center px-4 py-1 rounded-full text-sm font-semibold bg-gray-300 text-black shadow min-w-[70px]">
+                            <%= jj.color_apostado.capitalize %>
+                          </span>
+                      <% end %>
+                    </td>
+
+
+                    <td class="p-2">$<%= number_with_delimiter(jj.apuesta) %></td>
+
+                    <!-- Color rojo si el dinero obtenido es negativo -->
+                    <td class="p-2 <%= jj.dinero_obtenido.negative? ? 'text-red-600' : 'text-green-600' %>">
+                        $<%= number_with_delimiter(jj.dinero_obtenido) %>
+                    </td>
+                    </tr>
+                <% end %>
+        </tbody>
         </table>
       </div>
     <% end %>
