@@ -7,8 +7,8 @@
       <%= form.text_field :nombre, class: 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400' %>
     </div>
     <div class="mb-6">
-      <%= form.label :puntos, 'Puntos base (opcional)', class: 'block text-gray-700 font-semibold mb-2' %>
-      <%= form.number_field :puntos, value: 10000, class: 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400' %>
+      <%= form.label :dinero, 'Dinero inicial', class: 'block text-gray-700 font-semibold mb-2' %>
+      <%= form.number_field :dinero, value: 10000, class: 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400' %>
     </div>
     <div class="flex justify-between items-center w-full mt-10 gap-10">
       <%= form.submit 'Crear Jugador', class: 'bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-2 rounded-lg shadow transition' %>

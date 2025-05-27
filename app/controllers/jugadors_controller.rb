@@ -25,7 +25,7 @@ class JugadorsController < ApplicationController
 
   def create
     @jugador = Jugador.new(jugador_params)
-    @jugador.dinero = 10000 if @jugador.dinero.nil?
+    @jugador.dinero = params[:jugador][:dinero].presence || 10000
     if @jugador.save
       redirect_to ruleta_path, notice: "Jugador creado exitosamente."
     else
