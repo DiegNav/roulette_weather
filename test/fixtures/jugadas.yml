@@ -1,11 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  jugador: one
-  clima: MyString
-  puntos_obtenidos: 1
+  color_ganador: rojo
+  max_temp: 32.5
 
 two:
-  jugador: two
-  clima: MyString
-  puntos_obtenidos: 1
+  color_ganador: negro
+  max_temp: 28.0
