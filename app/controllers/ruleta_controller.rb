@@ -80,6 +80,15 @@ class RuletaController < ApplicationController
 
   def procesar_jugada(jugador, jugada, color_ganador, max_temp = nil)
     apuesta = calcular_apuesta(jugador, max_temp)
+    if apuesta <= 0
+      jugada.historial_jugadas.create(
+        jugador: jugador,
+        dinero_obtenido: 0,
+        color_apostado: 'no participo',
+        apuesta: 'no participo'
+      )
+      return
+    end
     color_apostado = ruleta.sample
     ganancia = calcular_ganancia(apuesta, color_apostado, color_ganador)
     jugador.update(dinero: jugador.dinero - apuesta + ganancia)

@@ -107,7 +107,13 @@
                     </td>
 
 
-                    <td class="p-2">$<%= number_with_delimiter(jj.apuesta) %></td>
+                    <td class="p-2">
+                      <% if jj.apuesta == 'no participo' %>
+                        <span class="italic text-gray-500">No participó</span>
+                      <% else %>
+                        $<%= number_with_delimiter(jj.apuesta) %>
+                      <% end %>
+                    </td>
 
                     <!-- Color rojo si el dinero obtenido es negativo -->
                     <td class="p-2 <%= jj.dinero_obtenido.negative? ? 'text-red-600' : 'text-green-600' %>">

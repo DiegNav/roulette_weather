@@ -28,7 +28,15 @@ class GenerarRondaJob < ApplicationJob
 
   def procesar_jugador(jugador)
     apuesta = calcular_apuesta(jugador.dinero)
-    return if apuesta <= 0
+    if apuesta <= 0
+      @jugada.historial_jugadas.create(
+        jugador: jugador,
+        dinero_obtenido: 0,
+        color_apostado: "no participo",
+        apuesta: "no participo"
+      )
+      return
+    end
 
     color_apostado = elegir_color
     ganancia = calcular_ganancia(apuesta, color_apostado)
