@@ -1,3 +1,10 @@
+# Job responsible for generating a new "ronda" (round) in the application.
+# This job can be enqueued to run asynchronously using ActiveJob.
+#
+# Example usage:
+#   GenerarRondaJob.perform_later
+#
+# Inherit from ApplicationJob to leverage Rails job processing features.
 class GenerarRondaJob < ApplicationJob
   queue_as :default
 
