@@ -84,8 +84,8 @@ class RuletaController < ApplicationController
       jugada.historial_jugadas.create(
         jugador: jugador,
         dinero_obtenido: 0,
-        color_apostado: 'no participo',
-        apuesta: 'no participo'
+        color_apostado: "no participo",
+        apuesta: "no participo"
       )
       return
     end
